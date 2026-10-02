@@ -364,6 +364,98 @@ footer p{max-width:var(--maxw)}
   nav.toc .cols{columns:2;column-gap:20px}
   nav.toc a{break-inside:avoid}
 }
+/* ---- recherche & navigation : version confort (desktop + téléphone) ---- */
+.shell{grid-template-columns:272px minmax(0,1fr)}
+nav.toc{padding-top:0}
+nav.toc .search{
+  position:sticky;top:0;z-index:5;background:var(--bg);
+  padding:28px 0 14px;margin:0;display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;
+}
+.sbox{position:relative;flex:1 1 auto;min-width:0}
+.sbox .ico{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;color:var(--dim);pointer-events:none;
+}
+.search input{
+  width:100%;height:48px;padding:0 74px 0 44px;border-radius:12px;
+  font-size:16px;font-weight:500;line-height:1.2;
+  background:var(--surface);border:1.5px solid var(--border-strong);
+  box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s;
+}
+.search input::placeholder{font-weight:400}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.sbox .kbd{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--dim);
+  border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:6px;
+  padding:1px 7px;background:var(--surface-2);pointer-events:none;
+}
+.sbox:focus-within .kbd,.sbox.has-val .kbd{display:none}
+.sclear{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:36px;height:36px;border:0;border-radius:50%;background:transparent;
+  color:var(--dim);font-size:22px;line-height:1;cursor:pointer;display:none;
+}
+.sclear:hover{background:var(--surface-2);color:var(--text)}
+.sbox.has-val .sclear{display:block}
+nav.toc .results{flex:1 0 100%;margin-top:6px}
+nav.toc .results a{padding:10px 12px;border-radius:0 8px 8px 0}
+nav.toc .results .r-t{font-size:14.5px}
+nav.toc .results .r-c{font-size:11px}
+nav.toc .cols a{padding:5px 10px 5px 12px;font-size:14px}
+.tocbtn{
+  align-items:center;gap:9px;min-height:48px;padding:0 14px;border-radius:12px;
+  background:var(--accent);color:#fff;border:0;font:600 15px "IBM Plex Sans",sans-serif;
+  cursor:pointer;max-width:46%;
+}
+:root:not([data-theme="light"]) .tocbtn{color:#06181B}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .tocbtn{color:#fff}}
+:root[data-theme="dark"] .tocbtn{color:#06181B}
+:root[data-theme="light"] .tocbtn{color:#fff}
+.tocbtn .cur{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tocbtn .bars{width:18px;height:14px;flex:none;position:relative}
+.tocbtn .bars i{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor;transition:transform .2s,opacity .2s}
+.tocbtn .bars i:nth-child(1){top:0}.tocbtn .bars i:nth-child(2){top:6px}.tocbtn .bars i:nth-child(3){top:12px}
+.toc.open .tocbtn .bars i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.toc.open .tocbtn .bars i:nth-child(2){opacity:0}
+.toc.open .tocbtn .bars i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+@media (max-width:900px){
+  .shell{display:block;padding:0 16px}
+  nav.toc{display:contents}
+  nav.toc .search{
+    position:sticky;top:0;z-index:60;margin:0 -16px;padding:10px 16px;
+    background:var(--surface);border-bottom:1px solid var(--border);
+    flex-wrap:nowrap;align-items:center;
+  }
+  nav.toc .search .sbox .kbd{display:none}
+  .search input{height:46px}
+  .tocbtn{display:flex}
+  nav.toc .results,
+  nav.toc .cols{
+    position:fixed;left:0;right:0;top:67px;bottom:0;z-index:55;margin:0;
+    padding:8px 16px calc(24px + env(safe-area-inset-bottom,0px));
+    background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;columns:auto;
+  }
+  nav.toc .cols{display:none}
+  nav.toc.open .cols:not([hidden]){display:block}
+  nav.toc .grp{margin:22px 0 6px;font-size:11px}
+  nav.toc .grp:first-child{margin-top:8px}
+  nav.toc .cols a{
+    padding:0 14px;min-height:46px;display:flex;align-items:center;font-size:16px;
+    color:var(--text);border-left-width:3px;
+  }
+  nav.toc .cols a.on{background:var(--accent-soft)}
+  nav.toc .results a{padding:12px 14px;min-height:56px;border-radius:0 10px 10px 0;
+    background:var(--surface);margin-bottom:6px;border-left:3px solid var(--accent)}
+  nav.toc .results .r-t{font-size:16px}
+  nav.toc .results .r-c{font-size:12px;margin-top:2px}
+  nav.toc .results .r-none{padding:20px 6px;font-size:15px}
+  body.menu-open{overflow:hidden}
+  section,h3[id],h4[id],article[id]{scroll-margin-top:76px}
+  main{padding-top:22px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 /* ---- tes rendus C/Unix (ajout) ---- */
 .k-enonce{
@@ -422,10 +514,16 @@ pre.k-schema{
 <div class="shell">
 <nav class="toc" aria-label="Sommaire">
   <div class="search">
-    <input type="search" id="q" placeholder="Rechercher…" autocomplete="off" spellcheck="false" aria-label="Rechercher dans les fiches" aria-controls="results">
+    <div class="sbox">
+      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+      <input type="search" id="q" placeholder="Rechercher…" enterkeyhint="search" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Rechercher dans les fiches" aria-controls="results">
+      <kbd class="kbd" aria-hidden="true">/</kbd>
+      <button type="button" class="sclear" aria-label="Effacer la recherche">×</button>
+    </div>
+    <button type="button" class="tocbtn" id="tocbtn" aria-expanded="false" aria-controls="toclist"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="cur">Sommaire</span></button>
     <div class="results" id="results" role="listbox" hidden></div>
   </div>
-  <div class="cols">
+  <div class="cols" id="toclist">
   <div class="grp">Point de départ</div>
   <a href="#etat">Où tu en es</a>
   <a href="#plan">Ordre d'attaque conseillé</a>
@@ -10656,6 +10754,85 @@ exit 0</code></pre>
     input.focus();
     input.select();
   });
+})();
+</script>
+
+<script>
+/* ---- navigation mobile : menu repliable, effacer, section courante ---- */
+(function () {
+  "use strict";
+  var toc = document.querySelector("nav.toc");
+  var btn = document.getElementById("tocbtn");
+  var cols = document.getElementById("toclist");
+  var box = document.getElementById("results");
+  var input = document.getElementById("q");
+  if (!toc || !btn || !cols || !box || !input) return;
+
+  var sbox = input.parentNode;
+  var clear = sbox.querySelector(".sclear");
+  var cur = btn.querySelector(".cur");
+  var mq = window.matchMedia("(max-width:900px)");
+
+  function isOpen() { return toc.classList.contains("open"); }
+
+  function activeLabel() {
+    var a = cols.querySelector("a.on");
+    return a ? a.textContent.replace(/\s+/g, " ").trim() : "Sommaire";
+  }
+
+  function sync() {
+    var open = isOpen();
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    cur.textContent = open ? "Fermer" : activeLabel();
+    document.body.classList.toggle("menu-open", mq.matches && (open || !box.hidden));
+  }
+
+  function setOpen(v) {
+    toc.classList.toggle("open", !!v);
+    sync();
+  }
+
+  btn.addEventListener("click", function () {
+    if (!isOpen() && input.value) { input.value = ""; input.dispatchEvent(new Event("input")); }
+    setOpen(!isOpen());
+  });
+
+  cols.addEventListener("click", function (ev) {
+    if (ev.target.closest && ev.target.closest("a")) setOpen(false);
+  });
+
+  box.addEventListener("click", function () { setOpen(false); });
+
+  input.addEventListener("input", function () {
+    sbox.classList.toggle("has-val", input.value.length > 0);
+    if (isOpen()) setOpen(false);
+    sync();
+  });
+
+  clear.addEventListener("click", function () {
+    input.value = "";
+    input.dispatchEvent(new Event("input"));
+    input.focus();
+  });
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Escape") {
+      setOpen(false);
+      sbox.classList.remove("has-val");
+      window.setTimeout(sync, 0);
+    }
+  });
+
+  if ("MutationObserver" in window) {
+    new MutationObserver(sync).observe(cols, { attributes: true, subtree: true, attributeFilter: ["class"] });
+    new MutationObserver(sync).observe(box, { attributes: true, attributeFilter: ["hidden"] });
+  }
+
+  var onChange = function () { if (!mq.matches) toc.classList.remove("open"); sync(); };
+  if (mq.addEventListener) mq.addEventListener("change", onChange);
+  else if (mq.addListener) mq.addListener(onChange);
+
+  sync();
 })();
 </script>
 
